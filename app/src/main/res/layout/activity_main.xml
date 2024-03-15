@@ -1,18 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:backgroundTint="#75BC2B"
+    tools:context=".MainActivity"
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_del_examem" />
+
+    <com.example.pm1e2grupo5.Dibujar
+        android:id="@+id/lienzo"
+        android:layout_width="400dp"
+        android:layout_height="159dp"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="17dp"
+
+        android:background="#C1BEBE"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.215" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btnfirma"
+
+        android:layout_width="326dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/lienzo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#191818"
+        android:text="Guardar Firma" />
+
+    <!-- Text Input Layout -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="398dp"
+        android:layout_height="88dp"
+        android:hint="Ingrese su Nombre"
+        android:layout_below="@+id/btnfirma"
+        android:layout_marginTop="10dp"
+        app:boxBackgroundColor="#FAF5F5"
+        app:boxStrokeColor="#100F0F"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#FF0000"
+        app:startIconDrawable="@drawable/ic_person"
+        app:startIconTint="#131313">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Text Input Layout para el teléfono -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="398dp"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese su Teléfono"
+        android:layout_below="@id/txtNombre"
+        app:boxBackgroundColor="#E8E5E5"
+        app:boxStrokeColor="#100F0F"
+        android:layout_marginTop="405dp"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#FF0000"
+        app:startIconDrawable="@drawable/ic_phone"
+        app:startIconTint="#131313">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <!-- Text Input Layout para la latitud -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="398dp"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese la Latitud"
+        android:layout_below="@id/txtTelefono"
+        android:layout_marginTop="485dp"
+        app:boxBackgroundColor="#E8E5E5"
+        app:boxStrokeColor="#100F0F"
+        app:boxStrokeWidth="2dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#FF0000"
+        app:startIconDrawable="@drawable/ic_location"
+        app:startIconTint="#131313">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtLatitud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Text Input Layout para la longitud -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="398dp"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese la Longitud"
+        android:layout_below="@id/txtLatitud"
+        app:boxBackgroundColor="#E1DCDC"
+        app:boxStrokeColor="#100F0F"
+        app:boxStrokeWidth="2dp"
+        android:layout_marginTop="560dp"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="#FF0000"
+        app:startIconDrawable="@drawable/ic_location"
+        app:startIconTint="#131313">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/txtLongitud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#0E0E0E"
+            android:onClick="RegistroData"
+            android:text="Salvar Contacto"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnrestablecer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#100F10"
+            android:text="Contactos Salvados"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</RelativeLayout>
