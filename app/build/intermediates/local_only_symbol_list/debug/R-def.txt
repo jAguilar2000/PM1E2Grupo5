@@ -1,0 +1,27 @@
+R_DEF: Internal format may change without notice
+local
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+drawable ic_location
+drawable ic_person
+drawable ic_phone
+drawable logo_del_examem
+id btnSalvarG
+id btncontatosS
+id btnfirma
+id lienzo
+id logo
+id txtLatitud
+id txtLongitud
+id txtNombre
+id txtTelefono
+layout activity_main
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+style Base.Theme.PM1E2Grupo5
+style Theme.PM1E2Grupo5
+xml backup_rules
+xml data_extraction_rules
