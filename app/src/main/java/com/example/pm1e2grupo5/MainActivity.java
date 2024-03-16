@@ -17,9 +17,20 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.pm1e2grupo5.Modelo.Contactos;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.example.pm1e2grupo5.Modelo.RestApiMethods;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +38,8 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private TextInputEditText txtNombre, txtTelefono, txtLatitud, txtLongitud;
+
+    private RequestQueue requestQueue;
 
     public static String latitud = "";
     public static String longitud = "";
@@ -36,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        txtNombre =(TextInputEditText) findViewById(R.id.txtNombre);
+        txtTelefono =(TextInputEditText) findViewById(R.id.txtTelefono);
+        txtLatitud =(TextInputEditText) findViewById(R.id.txtLatitud);
+        txtLongitud =(TextInputEditText) findViewById(R.id.txtLongitud);
+        btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
+        btnguardar =(MaterialButton) findViewById(R.id.btnSalvarG);
+        btncontatosS =(MaterialButton) findViewById(R.id.btncontatosS);
 
         //LLENA LAS COORDENADAS PERO NO CONSULTA SE OTRORGA PERMISO SOLO
 
@@ -51,14 +72,6 @@ public class MainActivity extends AppCompatActivity {
             getLocation();
         }
 
-
-        txtNombre =(TextInputEditText) findViewById(R.id.txtNombre);
-        txtTelefono =(TextInputEditText) findViewById(R.id.txtTelefono);
-        txtLatitud =(TextInputEditText) findViewById(R.id.txtLatitud);
-        txtLongitud =(TextInputEditText) findViewById(R.id.txtLongitud);
-        btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
-        btnguardar =(MaterialButton) findViewById(R.id.btnSalvarG);
-        btncontatosS =(MaterialButton) findViewById(R.id.btncontatosS);
 
         txtLatitud.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +96,88 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //   validarDatos();
+                SendData();
             }
         });
 
+        btncontatosS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Abre la pantalla MainActivity
+                Intent intent = new Intent(MainActivity.this, ContactosActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
+    private void validarDatos() {
+        if(txtNombre.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Debe de escribir un nombre" ,Toast.LENGTH_LONG).show();
+        }else if (txtTelefono.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Debe de escribir un telefono" ,Toast.LENGTH_LONG).show();
+        }else if (txtLatitud.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Debe de escribir un latitud" ,Toast.LENGTH_LONG).show();
+        }else if (txtLongitud.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Debe de escribir un longitud" ,Toast.LENGTH_LONG).show();
+        }
+        else {
+            SendData();
+        }
+    }
+    private void SendData()
+    {
+        requestQueue = Volley.newRequestQueue(this);
+        Contactos person = new Contactos();
+
+        person.setNombre(txtNombre.getText().toString());
+        person.setTelefono(Integer.parseInt(txtTelefono.getText().toString()));
+        person.setLatitud(txtLatitud.getText().toString());
+        person.setLongitud(txtLongitud.getText().toString());
+        //person.setFoto(ConvertImageBase64(currentPhotoPath));
+
+        JSONObject jsonperson = new JSONObject();
+
+        try
+        {
+            jsonperson.put("nombre",person.getNombre() );
+            jsonperson.put("telefono",person.getTelefono() );
+            jsonperson.put("latitud",person.getLatitud() );
+            jsonperson.put("longitud",person.getLongitud() );
+            // jsonperson.put("foto",person.getFoto() );
+
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+
+        JsonObjectRequest request  = new JsonObjectRequest(Request.Method.POST,
+                RestApiMethods.EndpointPostContacto, jsonperson, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response)
+            {
+                try
+                {
+                    String mensaje = response.getString("messaje");
+                    Toast.makeText(getApplicationContext(), mensaje,Toast.LENGTH_LONG).show();
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                Toast.makeText(getApplicationContext(), error.getMessage().toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+        requestQueue.add(request);
+        limpiarCampos();
+    }
     //METODO PARA RECIBIR LAS COORDENADAS DE LOCALIZACION
     public class Localizacion implements LocationListener {
         MainActivity mainActivity;
@@ -173,6 +262,16 @@ public class MainActivity extends AppCompatActivity {
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
 
     }
+
+    private void limpiarCampos() {
+        txtNombre.setText("");
+        txtTelefono.setText("");
+        txtLatitud.setText("");
+        txtLongitud.setText("");
+        txtNombre.requestFocus();
+        //  imageView.setImageDrawable(null);
+    }
+
 
 
 

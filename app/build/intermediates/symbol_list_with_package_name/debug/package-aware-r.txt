@@ -3312,6 +3312,10 @@ id easeInOut
 id easeOut
 id east
 id edge
+id editTextLatitud
+id editTextLongitud
+id editTextNombre
+id editTextTelefono
 id edit_query
 id elastic
 id embed
@@ -3357,6 +3361,7 @@ id hybrid
 id icon
 id icon_group
 id icon_only
+id idTextView
 id ifRoom
 id ignore
 id ignoreRequest
@@ -3372,6 +3377,7 @@ id item_touch_helper_previous_elevation
 id jumpToEnd
 id jumpToStart
 id labeled
+id latitudTextView
 id layout
 id left
 id leftToRight
@@ -3382,8 +3388,10 @@ id line1
 id line3
 id linear
 id listMode
+id listView
 id list_item
 id logo
+id longitudTextView
 id m3_side_sheet
 id marquee
 id masked
@@ -3456,6 +3464,7 @@ id neverCompleteToEnd
 id neverCompleteToStart
 id noScroll
 id noState
+id nombreTextView
 id none
 id normal
 id north
@@ -3586,6 +3595,7 @@ id tag_transition_group
 id tag_unhandled_key_event_manager
 id tag_unhandled_key_listeners
 id tag_window_insets_animation_callback
+id telefonoTextView
 id terrain
 id text
 id text2
@@ -3762,6 +3772,7 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
+layout activity_contactos
 layout activity_main
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -3779,6 +3790,8 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout dialog_edit_contact
+layout item_contacto
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -5297,3 +5310,4 @@ styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration
 styleable include constraintSet
 xml backup_rules
 xml data_extraction_rules
+xml provider_paths
