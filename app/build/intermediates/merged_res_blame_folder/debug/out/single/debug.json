@@ -76,6 +76,10 @@
         "source": "com.example.pm1e2grupo5.app-main-36:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
+        "merged": "com.example.pm1e2grupo5.app-merged_res-34:/xml_provider_paths.xml.flat",
+        "source": "com.example.pm1e2grupo5.app-main-36:/xml/provider_paths.xml"
+    },
+    {
         "merged": "com.example.pm1e2grupo5.app-merged_res-34:/xml_data_extraction_rules.xml.flat",
         "source": "com.example.pm1e2grupo5.app-main-36:/xml/data_extraction_rules.xml"
     },

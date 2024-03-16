@@ -25,3 +25,4 @@ style Base.Theme.PM1E2Grupo5
 style Theme.PM1E2Grupo5
 xml backup_rules
 xml data_extraction_rules
+xml provider_paths
