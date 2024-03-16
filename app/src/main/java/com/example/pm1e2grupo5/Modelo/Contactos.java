@@ -8,13 +8,12 @@ public class Contactos {
     private String longitud;
     private String firmaBase64;
 
-    public Contactos(int contactoId, String nombre, int telefono, String latitud, String longitud, String firmaBase64) {
+    public Contactos(int contactoId, String nombre, int telefono, String latitud, String longitud) {
         this.contactoId = contactoId;
         this.nombre = nombre;
         this.telefono = telefono;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.firmaBase64 = firmaBase64;
     }
     public Contactos(){
 

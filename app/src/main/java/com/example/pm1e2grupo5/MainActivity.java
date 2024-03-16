@@ -15,6 +15,7 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -26,159 +27,149 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.pm1e2grupo5.Modelo.Contactos;
+import com.example.pm1e2grupo5.Modelo.RestApiMethods;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.example.pm1e2grupo5.Modelo.RestApiMethods;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+
     private TextInputEditText txtNombre, txtTelefono, txtLatitud, txtLongitud;
-
     private RequestQueue requestQueue;
-
-    public static String latitud = "";
-    public static String longitud = "";
-
     private MaterialButton btnfirma, btnguardar, btncontatosS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txtNombre =(TextInputEditText) findViewById(R.id.txtNombre);
-        txtTelefono =(TextInputEditText) findViewById(R.id.txtTelefono);
-        txtLatitud =(TextInputEditText) findViewById(R.id.txtLatitud);
-        txtLongitud =(TextInputEditText) findViewById(R.id.txtLongitud);
-        btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
-        btnguardar =(MaterialButton) findViewById(R.id.btnSalvarG);
-        btncontatosS =(MaterialButton) findViewById(R.id.btncontatosS);
+        txtNombre = findViewById(R.id.txtNombre);
+        txtTelefono = findViewById(R.id.txtTelefono);
+        txtLatitud = findViewById(R.id.txtLatitud);
+        txtLongitud = findViewById(R.id.txtLongitud);
+        btnfirma = findViewById(R.id.btnfirma);
+        btnguardar = findViewById(R.id.btnSalvarG);
+        btncontatosS = findViewById(R.id.btncontatosS);
 
-        //LLENA LAS COORDENADAS PERO NO CONSULTA SE OTRORGA PERMISO SOLO
+        Intent intent = getIntent();
+        if (intent.hasExtra("contactoId")) {
+            txtNombre.setText(intent.getStringExtra("nombre"));
+            txtTelefono.setText(String.valueOf(intent.getIntExtra("telefono", 0)));
+            txtLatitud.setText(intent.getStringExtra("latitud"));
+            txtLongitud.setText(intent.getStringExtra("longitud"));
+        }
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1001);
 
-        }
-        else {
+        } else {
             getLocation();
         }
-
 
         txtLatitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el LocationManager y la Localizacion
-                LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 Localizacion localizacion = new Localizacion();
                 localizacion.setMainActivity(MainActivity.this);
 
-                // Solicitar actualizaciones de ubicación
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
                 }
-                mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
-                mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
             }
         });
 
         btnguardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //   validarDatos();
-                SendData();
+                validarDatos();
             }
         });
 
         btncontatosS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Abre la pantalla MainActivity
                 Intent intent = new Intent(MainActivity.this, ContactosActivity.class);
                 startActivity(intent);
             }
         });
-
     }
 
     private void validarDatos() {
-        if(txtNombre.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Debe de escribir un nombre" ,Toast.LENGTH_LONG).show();
-        }else if (txtTelefono.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), "Debe de escribir un telefono" ,Toast.LENGTH_LONG).show();
-        }else if (txtLatitud.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), "Debe de escribir un latitud" ,Toast.LENGTH_LONG).show();
-        }else if (txtLongitud.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(), "Debe de escribir un longitud" ,Toast.LENGTH_LONG).show();
-        }
-        else {
-            SendData();
+        if (txtNombre.getText().toString().isEmpty() ||
+                txtTelefono.getText().toString().isEmpty() ||
+                txtLatitud.getText().toString().isEmpty() ||
+                txtLongitud.getText().toString().isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Todos los campos son requeridos", Toast.LENGTH_LONG).show();
+        } else {
+            // Si hay un contactoId, actualiza el contacto, de lo contrario, crea uno nuevo
+            int contactoId = getIntent().getIntExtra("contactoId", 0);
+            Contactos nuevoContacto = new Contactos(contactoId, txtNombre.getText().toString(), Integer.parseInt(txtTelefono.getText().toString()), txtLatitud.getText().toString(), txtLongitud.getText().toString());
+            SendData(nuevoContacto);
         }
     }
-    private void SendData()
-    {
-        requestQueue = Volley.newRequestQueue(this);
-        Contactos person = new Contactos();
 
-        person.setNombre(txtNombre.getText().toString());
-        person.setTelefono(Integer.parseInt(txtTelefono.getText().toString()));
-        person.setLatitud(txtLatitud.getText().toString());
-        person.setLongitud(txtLongitud.getText().toString());
-        //person.setFoto(ConvertImageBase64(currentPhotoPath));
+    private void SendData(Contactos person) {
+        requestQueue = Volley.newRequestQueue(this);
 
         JSONObject jsonperson = new JSONObject();
 
-        try
-        {
-            jsonperson.put("nombre",person.getNombre() );
-            jsonperson.put("telefono",person.getTelefono() );
-            jsonperson.put("latitud",person.getLatitud() );
-            jsonperson.put("longitud",person.getLongitud() );
-            // jsonperson.put("foto",person.getFoto() );
-
-        }
-        catch (Exception ex)
-        {
+        try {
+            jsonperson.put("contactoId", person.getContactoId());
+            jsonperson.put("nombre", person.getNombre());
+            jsonperson.put("telefono", person.getTelefono());
+            jsonperson.put("latitud", person.getLatitud());
+            jsonperson.put("longitud", person.getLongitud());
+        } catch (JSONException ex) {
             ex.printStackTrace();
         }
 
-        JsonObjectRequest request  = new JsonObjectRequest(Request.Method.POST,
-                RestApiMethods.EndpointPostContacto, jsonperson, new Response.Listener<JSONObject>() {
+        String endpoint;
+        if (person.getContactoId() != 0) {
+            endpoint = RestApiMethods.EndpointUpdateContacto;
+        } else {
+            endpoint = RestApiMethods.EndpointPostContacto;
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                endpoint, jsonperson, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(JSONObject response)
-            {
-                try
-                {
+            public void onResponse(JSONObject response) {
+                try {
                     String mensaje = response.getString("messaje");
-                    Toast.makeText(getApplicationContext(), mensaje,Toast.LENGTH_LONG).show();
-                }
-                catch (Exception ex)
-                {
+                    Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+                } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                Toast.makeText(getApplicationContext(), error.getMessage().toString(),Toast.LENGTH_LONG).show();
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
         requestQueue.add(request);
         limpiarCampos();
     }
-    //METODO PARA RECIBIR LAS COORDENADAS DE LOCALIZACION
+
+
     public class Localizacion implements LocationListener {
         MainActivity mainActivity;
 
@@ -186,24 +177,13 @@ public class MainActivity extends AppCompatActivity {
             this.mainActivity = mainActivity;
         }
 
-        //METODO CAPTURA EL CAMBIO DE LA LOCACION REVISANDO EL GPS
         @Override
         public void onLocationChanged(Location loc) {
-
-            loc.getLatitude();
-            loc.getLongitude();
-
-            String Text = "Mi ubicacion actual es: " + "\n Lat = "
-                    + loc.getLatitude() + "\n Long = " + loc.getLongitude();
-
-
-            MainActivity.setLatitud(loc.getLatitude() + "");
-            MainActivity.setLongitud(loc.getLongitude() + "");
-
-            txtLatitud.setText(loc.getLatitude() + "");
-            txtLongitud.setText(loc.getLongitude() + "");
+            txtLatitud.setText(String.valueOf(loc.getLatitude()));
+            txtLongitud.setText(String.valueOf(loc.getLongitude()));
             this.mainActivity.setLocation(loc);
         }
+
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             switch (status) {
@@ -219,49 +199,50 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    //METODO PARA OBTENER LA LATITUD
-    public static void setLatitud(String latitud) {
-        MainActivity.latitud = latitud;
-    }
 
-
-    //METODO PARA OBTENER LA LONGITUD
-    public static void setLongitud(String longitud) {
-        MainActivity.longitud = longitud;
-    }
-
-    //METODO PARA LA setear la LOCAION
     public void setLocation(Location loc) {
-
         if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
             try {
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                List<Address> list = geocoder.getFromLocation(
-                        loc.getLatitude(), loc.getLongitude(), 1);
+                List<Address> list = geocoder.getFromLocation(loc.getLatitude(), loc.getLongitude(), 1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-
     private void getLocation() {
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Localizacion Local = new Localizacion();
-        Local.setMainActivity(this);
-        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Localizacion localizacion = new Localizacion();
+        localizacion.setMainActivity(this);
+        final boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!gpsEnabled) {
-            //SE VA A LA CONFIGURACION DEL SISTEMA PARA QUE ACTIVE EL GPS UNA VEZ QUE INICIA LA APLICACION
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(settingsIntent);
         }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
         }
-        mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
-        mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
     }
+
+    private String ConvertImageBase64(String imagePath) {
+        String encodedImage = "";
+        try {
+            InputStream inputStream = new FileInputStream(imagePath);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+            encodedImage = Base64.encodeToString(buffer, Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return encodedImage;
+    }
+
 
     private void limpiarCampos() {
         txtNombre.setText("");
@@ -269,10 +250,5 @@ public class MainActivity extends AppCompatActivity {
         txtLatitud.setText("");
         txtLongitud.setText("");
         txtNombre.requestFocus();
-        //  imageView.setImageDrawable(null);
     }
-
-
-
-
 }

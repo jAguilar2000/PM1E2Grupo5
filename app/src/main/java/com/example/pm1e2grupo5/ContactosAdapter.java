@@ -3,6 +3,7 @@ package com.example.pm1e2grupo5;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
     private ArrayList<Contactos> contactosList;
     private LayoutInflater inflater;
     private Context context;
+    private int clicksCount = 0;
+    private final int DOUBLE_CLICK_DELAY = 200;
 
     public ContactosAdapter(Context context, ArrayList<Contactos> contactosList) {
         super(context, 0, contactosList);
@@ -66,7 +69,22 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarOpciones(contacto);
+                clicksCount++;
+                if (clicksCount == 2) {
+                    Intent intent = new Intent(context, Ubicacion.class);
+                    context.startActivity(intent);
+                    clicksCount = 0;
+                } else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (clicksCount == 1) {
+                                mostrarOpciones(contacto);
+                            }
+                            clicksCount = 0;
+                        }
+                    }, DOUBLE_CLICK_DELAY);
+                }
             }
         });
 
@@ -145,80 +163,14 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
 
 
     private void actualizarContacto(final Contactos contacto) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Editar contacto");
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("contactoId", contacto.getContactoId());
+        intent.putExtra("nombre", contacto.getNombre());
+        intent.putExtra("telefono", contacto.getTelefono());
+        intent.putExtra("latitud", contacto.getLatitud());
+        intent.putExtra("longitud", contacto.getLongitud());
 
-
-        View viewInflated = LayoutInflater.from(context).inflate(R.layout.dialog_edit_contact, null);
-
-
-        final EditText nombreEditText = viewInflated.findViewById(R.id.editTextNombre);
-        final EditText telefonoEditText = viewInflated.findViewById(R.id.editTextTelefono);
-        final EditText latitudEditText = viewInflated.findViewById(R.id.editTextLatitud);
-        final EditText longitudEditText = viewInflated.findViewById(R.id.editTextLongitud);
-
-
-        nombreEditText.setText(contacto.getNombre());
-        telefonoEditText.setText(String.valueOf(contacto.getTelefono()));
-        latitudEditText.setText(contacto.getLatitud());
-        longitudEditText.setText(contacto.getLongitud());
-
-        builder.setView(viewInflated);
-
-        builder.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String nuevoNombre = nombreEditText.getText().toString().trim();
-                String nuevoTelefono = telefonoEditText.getText().toString().trim();
-                String nuevaLatitud = latitudEditText.getText().toString().trim();
-                String nuevaLongitud = longitudEditText.getText().toString().trim();
-
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("contactoId", contacto.getContactoId());
-                    jsonBody.put("nombre", nuevoNombre);
-                    jsonBody.put("telefono", nuevoTelefono);
-                    jsonBody.put("latitud", nuevaLatitud);
-                    jsonBody.put("longitud", nuevaLongitud);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                RequestQueue requestQueue = Volley.newRequestQueue(context);
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
-                        RestApiMethods.EndpointUpdateContacto,
-                        jsonBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    String mensaje = response.getString("messaje");
-                                    Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
-
-                                    contacto.setNombre(nuevoNombre);
-                                    contacto.setTelefono(Integer.parseInt(nuevoTelefono));
-                                    contacto.setLatitud(nuevaLatitud);
-                                    contacto.setLongitud(nuevaLongitud);
-                                    notifyDataSetChanged();
-                                } catch (JSONException ex) {
-                                    ex.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error al actualizar el contacto", Toast.LENGTH_LONG).show();
-                        error.printStackTrace();
-                    }
-                });
-
-                requestQueue.add(request);
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", null);
-        builder.show();
+        context.startActivity(intent);
     }
 
 

@@ -3,10 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Buscar contacto"
+        android:iconifiedByDefault="false"
+        android:layout_margin="8dp"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/searchView"
         android:divider="@android:color/transparent"
         android:dividerHeight="8dp"
         android:padding="8dp" />

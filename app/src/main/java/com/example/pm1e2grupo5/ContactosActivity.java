@@ -2,6 +2,7 @@ package com.example.pm1e2grupo5;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ContactosActivity extends AppCompatActivity {
 
     private ArrayList<Contactos> contactosList;
+    private ArrayList<Contactos> contactosListFiltered;
     private ContactosAdapter adapter;
 
     @Override
@@ -30,10 +32,40 @@ public class ContactosActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.listView);
         contactosList = new ArrayList<>();
-        adapter = new ContactosAdapter(this, contactosList);
+        contactosListFiltered = new ArrayList<>();
+        adapter = new ContactosAdapter(this, contactosListFiltered);
         listView.setAdapter(adapter);
 
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
+
         obtenerContactosDesdeAPI();
+    }
+
+    private void filter(String query) {
+        contactosListFiltered.clear();
+        if (query.isEmpty()) {
+            contactosListFiltered.addAll(contactosList);
+        } else {
+            query = query.toLowerCase();
+            for (Contactos contacto : contactosList) {
+                if (contacto.getNombre().toLowerCase().contains(query)) {
+                    contactosListFiltered.add(contacto);
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void obtenerContactosDesdeAPI() {
@@ -43,7 +75,6 @@ public class ContactosActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build();
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.0.20/PM1E2Grupo5Api/")
@@ -59,6 +90,7 @@ public class ContactosActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Contactos>> call, Response<ArrayList<Contactos>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     contactosList.addAll(response.body());
+                    contactosListFiltered.addAll(response.body());
                     adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(ContactosActivity.this, "Error al obtener los contactos desde la API", Toast.LENGTH_SHORT).show();
