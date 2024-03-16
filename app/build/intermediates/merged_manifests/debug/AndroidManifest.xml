@@ -67,9 +67,6 @@
         android:theme="@style/Theme.PM1E2Grupo5"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.example.pm1e2grupo5.ContactosActivity"
-            android:exported="false" />
-        <activity
             android:name="com.example.pm1e2grupo5.MainActivity"
             android:exported="true" >
             <intent-filter>
