@@ -1,0 +1,15 @@
+
+*.properties
+*.probe
+*.txt
+*.lock
+*.bin
+/.gradle
+/.gradle
+/app/build/intermediates/dex/debugAndroidTest/mergeProjectDexDebugAndroidTest/0
+/app/build
+/.gradle/8.2/fileHashes
+/.gradle/8.2
+/app/build/intermediates
+/app/build
+/app

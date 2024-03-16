@@ -77,7 +77,7 @@ public class ContactosActivity extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.20/PM1E2Grupo5Api/")
+                .baseUrl("http://192.168.1.35/PM1E2Grupo5Api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();

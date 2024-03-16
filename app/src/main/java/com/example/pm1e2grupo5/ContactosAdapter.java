@@ -71,8 +71,7 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
             public void onClick(View v) {
                 clicksCount++;
                 if (clicksCount == 2) {
-                    Intent intent = new Intent(context, Ubicacion.class);
-                    context.startActivity(intent);
+                    verUbicacion(contacto);
                     clicksCount = 0;
                 } else {
                     new Handler().postDelayed(new Runnable() {
@@ -94,7 +93,7 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
     private void mostrarOpciones(final Contactos contacto) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Seleccione una acción")
-                .setItems(new CharSequence[]{"Eliminar", "Actualizar"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Eliminar", "Actualizar", "Ver Ubicacion"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -103,6 +102,9 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
                                 break;
                             case 1:
                                 actualizarContacto(contacto);
+                                break;
+                            case 2:
+                                verUbicacion(contacto);
                                 break;
                         }
                     }
@@ -164,6 +166,17 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
 
     private void actualizarContacto(final Contactos contacto) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("contactoId", contacto.getContactoId());
+        intent.putExtra("nombre", contacto.getNombre());
+        intent.putExtra("telefono", contacto.getTelefono());
+        intent.putExtra("latitud", contacto.getLatitud());
+        intent.putExtra("longitud", contacto.getLongitud());
+
+        context.startActivity(intent);
+    }
+
+    private void verUbicacion(final Contactos contacto) {
+        Intent intent = new Intent(context, Ubicacion.class);
         intent.putExtra("contactoId", contacto.getContactoId());
         intent.putExtra("nombre", contacto.getNombre());
         intent.putExtra("telefono", contacto.getTelefono());

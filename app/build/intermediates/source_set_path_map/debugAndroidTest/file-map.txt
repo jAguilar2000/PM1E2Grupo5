@@ -1,6 +1,6 @@
-com.example.pm1e2grupo5.test.app-annotation-experimental-1.3.0-0 C:\Users\IT\.gradle\caches\transforms-3\370dc6df9c1ddfc3c2f9320d443702d0\transformed\annotation-experimental-1.3.0\res
-com.example.pm1e2grupo5.test.app-core-1.5.0-1 C:\Users\IT\.gradle\caches\transforms-3\c8607414e9ae04aaf80b1bde0a39360d\transformed\core-1.5.0\res
-com.example.pm1e2grupo5.test.app-androidTest-2 C:\Users\IT\Documents\GitHub\PM1E2Grupo5\app\build\generated\res\resValues\androidTest\debug
-com.example.pm1e2grupo5.test.app-mergeDebugAndroidTestResources-3 C:\Users\IT\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
-com.example.pm1e2grupo5.test.app-mergeDebugAndroidTestResources-4 C:\Users\IT\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
-com.example.pm1e2grupo5.test.app-merged_res-5 C:\Users\IT\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\merged_res\debugAndroidTest
+com.example.pm1e2grupo5.test.app-annotation-experimental-1.3.0-0 C:\Users\keyla\.gradle\caches\transforms-3\370dc6df9c1ddfc3c2f9320d443702d0\transformed\annotation-experimental-1.3.0\res
+com.example.pm1e2grupo5.test.app-core-1.5.0-1 C:\Users\keyla\.gradle\caches\transforms-3\c8607414e9ae04aaf80b1bde0a39360d\transformed\core-1.5.0\res
+com.example.pm1e2grupo5.test.app-androidTest-2 C:\Users\keyla\Documents\GitHub\PM1E2Grupo5\app\build\generated\res\resValues\androidTest\debug
+com.example.pm1e2grupo5.test.app-mergeDebugAndroidTestResources-3 C:\Users\keyla\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.example.pm1e2grupo5.test.app-mergeDebugAndroidTestResources-4 C:\Users\keyla\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.example.pm1e2grupo5.test.app-merged_res-5 C:\Users\keyla\Documents\GitHub\PM1E2Grupo5\app\build\intermediates\merged_res\debugAndroidTest
