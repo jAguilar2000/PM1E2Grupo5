@@ -3,20 +3,17 @@ package com.example.pm1e2grupo5.Modelo;
 public class Contactos {
     private int contactoId;
     private String nombre;
-    private String telefono;
+    private int telefono;
     private String latitud;
     private String longitud;
     private String firmaBase64;
 
-    private String firma;
-
-    public Contactos(int contactoId, String nombre, String telefono, String latitud, String longitud, String firma) {
+    public Contactos(int contactoId, String nombre, int telefono, String latitud, String longitud) {
         this.contactoId = contactoId;
         this.nombre = nombre;
         this.telefono = telefono;
         this.latitud = latitud;
         this.longitud = longitud;
-        this.firma = firma;
     }
     public Contactos(){
 
@@ -40,11 +37,11 @@ public class Contactos {
         this.nombre = nombre;
     }
 
-    public String getTelefono() {
+    public int getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(String telefono) {
+    public void setTelefono(int telefono) {
         this.telefono = telefono;
     }
 
@@ -70,13 +67,5 @@ public class Contactos {
 
     public void setFirmaBase64(String firmaBase64) {
         this.firmaBase64 = firmaBase64;
-    }
-
-    public String getFirma() {
-        return firma;
-    }
-
-    public void setFirma(String firma) {
-        this.firma = firma;
     }
 }

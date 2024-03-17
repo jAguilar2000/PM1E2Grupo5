@@ -304,7 +304,6 @@ attr circularflow_defaultAngle
 attr circularflow_defaultRadius
 attr circularflow_radiusInDP
 attr circularflow_viewCenter
-attr clearOnDoubleClick
 attr clearsTag
 attr clickAction
 attr clockFaceBackgroundColor
@@ -979,9 +978,6 @@ attr passwordToggleTint
 attr passwordToggleTintMode
 attr pathMotionArc
 attr path_percent
-attr penColor
-attr penMaxWidth
-attr penMinWidth
 attr percentHeight
 attr percentWidth
 attr percentX
@@ -1323,7 +1319,6 @@ attr useDrawerArrowDrawable
 attr useMaterialThemeColors
 attr useViewLifecycle
 attr values
-attr velocityFilterWeight
 attr verticalOffset
 attr verticalOffsetWithText
 attr viewInflaterClass
@@ -1357,7 +1352,6 @@ attr zOrderOnTop
 bool abc_action_bar_embed_tabs
 bool abc_config_actionMenuItemAllCaps
 bool mtrl_btn_textappearance_all_caps
-color Black
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -3243,9 +3237,9 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
-id btnCrear
+id btnSalvarG
+id btncontatosS
 id btnfirma
-id btnlistado
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3391,6 +3385,7 @@ id layout
 id left
 id leftToRight
 id legacy
+id lienzo
 id light
 id line1
 id line3
@@ -3559,7 +3554,6 @@ id shortcut
 id showCustom
 id showHome
 id showTitle
-id signature_pad
 id sin
 id skipCollapsed
 id skipped
@@ -5292,7 +5286,6 @@ styleable ShapeAppearance cornerFamily cornerFamilyBottomLeft cornerFamilyBottom
 styleable ShapeableImageView contentPadding contentPaddingBottom contentPaddingEnd contentPaddingLeft contentPaddingRight contentPaddingStart contentPaddingTop shapeAppearance shapeAppearanceOverlay strokeColor strokeWidth
 styleable SideSheetBehavior_Layout android_maxWidth android_maxHeight android_elevation backgroundTint behavior_draggable coplanarSiblingViewId shapeAppearance shapeAppearanceOverlay
 styleable SignInButton buttonSize colorScheme scopeUris
-styleable SignaturePad clearOnDoubleClick penColor penMaxWidth penMinWidth velocityFilterWeight
 styleable Slider android_enabled android_value android_stepSize android_valueFrom android_valueTo haloColor haloRadius labelBehavior labelStyle minTouchTargetSize thumbColor thumbElevation thumbRadius thumbStrokeColor thumbStrokeWidth tickColor tickColorActive tickColorInactive tickRadiusActive tickRadiusInactive tickVisible trackColor trackColorActive trackColorInactive trackHeight
 styleable Snackbar snackbarButtonStyle snackbarStyle snackbarTextViewStyle
 styleable SnackbarLayout android_maxWidth actionTextColorAlpha animationMode backgroundOverlayColorAlpha backgroundTint backgroundTintMode elevation maxActionInlineWidth shapeAppearance shapeAppearanceOverlay
