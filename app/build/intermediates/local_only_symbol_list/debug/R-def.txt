@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+color Black
 color black
 color white
 drawable ic_launcher_background
@@ -9,9 +10,9 @@ drawable ic_person
 drawable ic_phone
 drawable logo_del_examem
 drawable mm
-id btnSalvarG
-id btncontatosS
+id btnCrear
 id btnfirma
+id btnlistado
 id editTextLatitud
 id editTextLongitud
 id editTextNombre
@@ -19,13 +20,13 @@ id editTextTelefono
 id idTextView
 id irGoogleMaps
 id latitudTextView
-id lienzo
 id listView
 id logo
 id longitudTextView
 id map
 id nombreTextView
 id searchView
+id signature_pad
 id telefonoTextView
 id txtLatitud
 id txtLongitud
