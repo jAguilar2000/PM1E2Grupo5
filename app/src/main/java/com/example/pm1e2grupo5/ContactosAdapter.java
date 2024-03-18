@@ -36,6 +36,8 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
     private int clicksCount = 0;
     private final int DOUBLE_CLICK_DELAY = 200;
 
+    private ArrayList<Contactos> contactosListFiltered;
+
     public ContactosAdapter(Context context, ArrayList<Contactos> contactosList) {
         super(context, 0, contactosList);
         this.context = context;
@@ -116,7 +118,6 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
                 .create()
                 .show();
     }
-
     private void eliminarContacto(final Contactos contacto) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirmar eliminación")
@@ -144,6 +145,12 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
 
                                             contactosList.remove(contacto);
                                             notifyDataSetChanged();
+
+                                            // Actualiza la lista filtrada si es necesario
+                                            if (contactosListFiltered != null) {
+                                                contactosListFiltered.remove(contacto);
+                                                notifyDataSetChanged();
+                                            }
                                         } catch (JSONException ex) {
                                             ex.printStackTrace();
                                         }
@@ -159,12 +166,11 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
                         requestQueue.add(request);
                     }
                 })
+
                 .setNegativeButton("Cancelar", null)
                 .create()
                 .show();
     }
-
-
 
 
     private void actualizarContacto(final Contactos contacto) {
