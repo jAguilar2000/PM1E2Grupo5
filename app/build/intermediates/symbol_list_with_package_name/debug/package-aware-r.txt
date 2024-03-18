@@ -3237,6 +3237,7 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnAtras
 id btnLimpiarfirma
 id btnSalvarG
 id btncontatosS
@@ -3368,6 +3369,7 @@ id ifRoom
 id ignore
 id ignoreRequest
 id image
+id imageView
 id immediateStop
 id included
 id indeterminate
@@ -3779,6 +3781,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_contactos
 layout activity_main
+layout activity_mostrar_firma
 layout activity_ubicacion
 layout custom_dialog
 layout design_bottom_navigation_item

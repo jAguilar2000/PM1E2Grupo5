@@ -1,6 +1,8 @@
 package com.example.pm1e2grupo5;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -8,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pm1e2grupo5.Modelo.Contactos;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,16 @@ public class ContactosActivity extends AppCompatActivity {
         contactosListFiltered = new ArrayList<>();
         adapter = new ContactosAdapter(this, contactosListFiltered);
         listView.setAdapter(adapter);
+
+        MaterialButton btnAtras =findViewById(R.id.btnAtras);
+        btnAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ContactosActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

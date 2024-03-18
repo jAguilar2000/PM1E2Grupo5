@@ -93,7 +93,7 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
     private void mostrarOpciones(final Contactos contacto) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Seleccione una acción")
-                .setItems(new CharSequence[]{"Eliminar", "Actualizar", "Ver Ubicacion"}, new DialogInterface.OnClickListener() {
+                .setItems(new CharSequence[]{"Eliminar", "Actualizar", "Ver Ubicacion","Ver firma"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -105,6 +105,9 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
                                 break;
                             case 2:
                                 verUbicacion(contacto);
+                                break;
+                            case 3:
+                                mostrarFirma(contacto);
                                 break;
                         }
                     }
@@ -183,6 +186,11 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
         intent.putExtra("latitud", contacto.getLatitud());
         intent.putExtra("longitud", contacto.getLongitud());
 
+        context.startActivity(intent);
+    }
+    private void mostrarFirma(final Contactos contacto) {
+        Intent intent = new Intent(context, MostrarFirmaActivity.class);
+        intent.putExtra("firma", contacto.getFirma());
         context.startActivity(intent);
     }
 

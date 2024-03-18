@@ -9,6 +9,7 @@ drawable ic_person
 drawable ic_phone
 drawable logo_del_examem
 drawable mm
+id btnAtras
 id btnLimpiarfirma
 id btnSalvarG
 id btncontatosS
@@ -17,6 +18,7 @@ id editTextLongitud
 id editTextNombre
 id editTextTelefono
 id idTextView
+id imageView
 id irGoogleMaps
 id latitudTextView
 id lienzo
@@ -33,6 +35,7 @@ id txtNombre
 id txtTelefono
 layout activity_contactos
 layout activity_main
+layout activity_mostrar_firma
 layout activity_ubicacion
 layout dialog_edit_contact
 layout item_contacto
