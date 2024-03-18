@@ -88,9 +88,11 @@ public class ContactosActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build();
+        //String baseUrl = "http://192.168.100.8/PM1E2Grupo5Api/";
+        String baseUrl = "http://172.30.0.2/";
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.100.8/PM1E2Grupo5Api/")
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
@@ -113,7 +115,7 @@ public class ContactosActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ArrayList<Contactos>> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(ContactosActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ContactosActivity.this, "Error de conexión" + baseUrl, Toast.LENGTH_SHORT).show();
             }
         });
     }

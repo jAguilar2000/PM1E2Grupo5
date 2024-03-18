@@ -37,7 +37,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:penColor="@color/Black"
+        app:penColor="@color/black"
         app:penMaxWidth="7dp"
         app:penMinWidth="3dp"
         android:background="#E8E5E5" />

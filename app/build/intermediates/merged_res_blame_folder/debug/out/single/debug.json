@@ -12,20 +12,16 @@
         "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/mipmap-mdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.pm1e2grupo5.app-merged_res-35:/layout_activity_main.xml.flat",
-        "source": "com.example.pm1e2grupo5.app-main-37:/layout/activity_main.xml"
-    },
-    {
         "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/layout_activity_ubicacion.xml.flat",
-        "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/layout/activity_ubicacion.xml"
-    },
-    {
         "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/drawable_ic_person.xml.flat",
         "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/drawable/ic_person.xml"
+    },
+    {
+        "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/layout_activity_ubicacion.xml.flat",
+        "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/layout/activity_ubicacion.xml"
     },
     {
         "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/mipmap-mdpi_ic_launcher.webp.flat",
@@ -110,5 +106,9 @@
     {
         "merged": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-merged_res-35:/drawable_mm.jpg.flat",
         "source": "/home/irrefl/.gradle/daemon/8.2/com.example.pm1e2grupo5.app-main-37:/drawable/mm.jpg"
+    },
+    {
+        "merged": "com.example.pm1e2grupo5.app-merged_res-35:/layout_activity_mostrar_firma.xml.flat",
+        "source": "com.example.pm1e2grupo5.app-main-37:/layout/activity_mostrar_firma.xml"
     }
 ]
