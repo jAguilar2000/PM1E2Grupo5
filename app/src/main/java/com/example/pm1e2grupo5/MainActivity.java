@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         txtTelefono =(TextInputEditText) findViewById(R.id.txtTelefono);
         txtLatitud =(TextInputEditText) findViewById(R.id.txtLatitud);
         txtLongitud =(TextInputEditText) findViewById(R.id.txtLongitud);
-       // btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
+
         btnguardar =(MaterialButton) findViewById(R.id.btnCrear);
         btncontatos =(MaterialButton) findViewById(R.id.btnlistado);
 
@@ -98,52 +98,31 @@ public class MainActivity extends AppCompatActivity {
         txtTelefono.addTextChangedListener(new PhoneValidations(txtTelefono));
         txtLatitud.addTextChangedListener(new GeolocationValidation(txtLatitud, txtLongitud));
         signatureExtractor = new SignatureExtractor();
-        txtLatitud.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        txtLatitud.setOnClickListener(v -> {
 
-                LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                Localizacion localizacion = new Localizacion();
-                localizacion.setMainActivity(MainActivity.this);
+            LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Localizacion localizacion = new Localizacion();
+            localizacion.setMainActivity(MainActivity.this);
 
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
-                }
-                mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
-                mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
             }
+            mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, localizacion);
+            mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, localizacion);
         });
 
-        btnguardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SendData();
-            }
-        });
+        btnguardar.setOnClickListener(v -> SendData());
 
 
 
-        btncontatos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ContactosActivity.class);
-                startActivity(intent);
-            }
+        btncontatos.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ContactosActivity.class);
+            startActivity(intent);
         });
 
     }
 
-
-    private String convertSignatureToBase64() {
-
-
-        Bitmap signatureBitmap = firma.getSignatureBitmap();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
