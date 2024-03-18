@@ -10,7 +10,9 @@ public class Contactos {
 
     private String firma;
 
-    public Contactos(int contactoId, String nombre, String telefono, String latitud, String longitud, String firma) {
+    public Contactos(int contactoId, String nombre,
+                     String telefono, String latitud,
+                     String longitud, String firma) {
         this.contactoId = contactoId;
         this.nombre = nombre;
         this.telefono = telefono;

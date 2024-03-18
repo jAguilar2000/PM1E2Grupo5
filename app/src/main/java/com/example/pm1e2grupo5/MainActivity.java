@@ -18,6 +18,8 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -29,8 +31,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.pm1e2grupo5.Infrastructure.ImageCompresors.SignatureExtractor;
 import com.example.pm1e2grupo5.Modelo.Contactos;
 import com.example.pm1e2grupo5.Modelo.RestApiMethods;
+import com.example.pm1e2grupo5.Modelo.RestApiMethodsL;
+import com.example.pm1e2grupo5.Validations.GeolocationValidation;
+import com.example.pm1e2grupo5.Validations.NameValidations;
+import com.example.pm1e2grupo5.Validations.PhoneValidations;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,6 +49,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE = 101;
@@ -53,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue resquestQueue;
 
     String currentPhotoPath;
+
+    SignatureExtractor signatureExtractor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,20 +90,22 @@ public class MainActivity extends AppCompatActivity {
         txtTelefono =(TextInputEditText) findViewById(R.id.txtTelefono);
         txtLatitud =(TextInputEditText) findViewById(R.id.txtLatitud);
         txtLongitud =(TextInputEditText) findViewById(R.id.txtLongitud);
-        btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
+       // btnfirma =(MaterialButton) findViewById(R.id.btnfirma);
         btnguardar =(MaterialButton) findViewById(R.id.btnCrear);
         btncontatos =(MaterialButton) findViewById(R.id.btnlistado);
 
-
+        txtNombre.addTextChangedListener(new NameValidations(txtNombre));
+        txtTelefono.addTextChangedListener(new PhoneValidations(txtTelefono));
+        txtLatitud.addTextChangedListener(new GeolocationValidation(txtLatitud, txtLongitud));
+        signatureExtractor = new SignatureExtractor();
         txtLatitud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el LocationManager y la Localizacion
+
                 LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 Localizacion localizacion = new Localizacion();
                 localizacion.setMainActivity(MainActivity.this);
 
-                // Solicitar actualizaciones de ubicación
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
@@ -109,14 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnfirma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                captureSignature();
-
-            }
-        });
 
         btncontatos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +141,11 @@ public class MainActivity extends AppCompatActivity {
         showToast("Imagen capturada!");
     }
 
+
+
     private String convertSignatureToBase64() {
+
+
         Bitmap signatureBitmap = firma.getSignatureBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -147,18 +157,65 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    private static boolean isValidBase64(String input) {
+        return Pattern.matches("^[a-zA-Z0-9+/]*={0,2}$", input);
+    }
+
     //Enviar Data
     private void SendData()
     {
 
         resquestQueue = Volley.newRequestQueue(this);
         Contactos contactos = new Contactos();
-        contactos.setNombre(Objects.requireNonNull(txtNombre.getText()).toString());
-        contactos.setTelefono(Objects.requireNonNull(txtTelefono.getText()).toString());
-        contactos.setLatitud(Objects.requireNonNull(txtLatitud.getText()).toString());
-        contactos.setLongitud(Objects.requireNonNull(txtLongitud.getText()).toString());
-        String firmaBase64 = convertSignatureToBase64();
+
+
+        String nombre = Objects.requireNonNull(txtNombre.getText()).toString();
+        String telefono = Objects.requireNonNull(txtTelefono.getText()).toString();
+        String latitud = Objects.requireNonNull(txtLatitud.getText()).toString();
+        String longitud = Objects.requireNonNull(txtLongitud.getText()).toString();
+
+        Predicate<String> nombreValidator = input -> input.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+");
+        Predicate<String> telefonoValidator = input -> input.matches("\\+504\\d{8}");
+        Predicate<String> latitudValidator = input -> input.matches("-?\\d+(\\.\\d+)?");
+        Predicate<String> longitudValidator = input -> input.matches("-?\\d+(\\.\\d+)?");
+        Predicate<String> firmaBase64Validator = input -> isValidBase64(input);
+
+        String firmaBase64 = signatureExtractor.convertSignatureToBase64(firma);
+
+        if (firmaBase64Validator.test(firmaBase64)) {
+            Toast.makeText(getApplicationContext(), "Firma Invalida, Debes firmar por huevos.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!nombreValidator.test(nombre)) {
+            txtNombre.setError("Nombre inválido. Debe contener solo letras y espacios.");
+            return;
+        }
+
+        if (!telefonoValidator.test(telefono)) {
+            txtTelefono.setError("Número de teléfono inválido. Debe estar en formato +504XXXXXXXX.");
+            return;
+        }
+
+        if (!latitudValidator.test(latitud)) {
+            txtLatitud.setError("Latitud inválida. Debe ser un número decimal.");
+            return;
+        }
+
+        if (!longitudValidator.test(longitud)) {
+            txtLongitud.setError("Longitud inválida. Debe ser un número decimal.");
+            return;
+        }
+
+
+        contactos.setNombre(nombre);
+        contactos.setTelefono(telefono);
+        contactos.setLatitud(latitud);
+        contactos.setLongitud(longitud);
         contactos.setFirma(firmaBase64);
+
+
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -168,24 +225,22 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.put("longitud", contactos.getLatitud());
             jsonObject.put("firma",contactos.getFirma());
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, RestApiMethods.EndpointPostContacto,
-                    jsonObject, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        String mensaje = response.getString("message");
-                        Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                                                               RestApiMethodsL.EndpointPostContacto,
+                jsonObject, response -> {
+                        try {
+                            String mensaje = response.getString("message");
+                            Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
+                            System.out.println(mensaje);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                }, error -> {
 
-                    Toast.makeText(getApplicationContext(), error.getMessage().toString(),
-                            Toast.LENGTH_LONG).show();
-                }
+                String err = error.getMessage().toString();
+
+                Toast.makeText(getApplicationContext(), err,
+                                Toast.LENGTH_LONG).show();
             });
 
             resquestQueue.add(request);
@@ -195,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //METODO PARA RECIBIR LAS COORDENADAS DE LOCALIZACION
+
     public class Localizacion implements LocationListener {
         MainActivity mainActivity;
 
@@ -203,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
             this.mainActivity = mainActivity;
         }
 
-        //METODO CAPTURA EL CAMBIO DE LA LOCACION REVISANDO EL GPS
         @Override
         public void onLocationChanged(Location loc) {
 
@@ -235,18 +289,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    //METODO PARA OBTENER LA LATITUD
+
     public static void setLatitud(String latitud) {
         MainActivity.latitud = latitud;
     }
 
 
-    //METODO PARA OBTENER LA LONGITUD
+
     public static void setLongitud(String longitud) {
         MainActivity.longitud = longitud;
     }
 
-    //METODO PARA LA setear la LOCAION
+
     public void setLocation(Location loc) {
 
         if (loc.getLatitude() != 0.0 && loc.getLongitude() != 0.0) {
@@ -263,9 +317,9 @@ public class MainActivity extends AppCompatActivity {
         LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Localizacion Local = new Localizacion();
         Local.setMainActivity(this);
-        final boolean gpsEnabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (!gpsEnabled) {
-            //SE VA A LA CONFIGURACION DEL SISTEMA PARA QUE ACTIVE EL GPS UNA VEZ QUE INICIA LA APLICACION
+        final boolean gpsEnabled = !mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (gpsEnabled) {
+
             Intent settingsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(settingsIntent);
         }

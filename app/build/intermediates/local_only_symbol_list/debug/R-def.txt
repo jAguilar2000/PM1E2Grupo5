@@ -11,7 +11,6 @@ drawable ic_phone
 drawable logo_del_examem
 drawable mm
 id btnCrear
-id btnfirma
 id btnlistado
 id editTextLatitud
 id editTextLongitud
@@ -28,6 +27,11 @@ id nombreTextView
 id searchView
 id signature_pad
 id telefonoTextView
+id textInputLayout
+id textInputLayoutLatitud
+id textInputLayoutLongitud
+id textInputLayoutTelefono
+id textView
 id txtLatitud
 id txtLongitud
 id txtNombre

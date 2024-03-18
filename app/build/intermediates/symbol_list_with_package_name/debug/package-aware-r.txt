@@ -3244,7 +3244,6 @@ id bounceBoth
 id bounceEnd
 id bounceStart
 id btnCrear
-id btnfirma
 id btnlistado
 id buttonPanel
 id cache_measures
@@ -3611,10 +3610,15 @@ id terrain
 id text
 id text2
 id textEnd
+id textInputLayout
+id textInputLayoutLatitud
+id textInputLayoutLongitud
+id textInputLayoutTelefono
 id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
 id textTop
+id textView
 id text_input_end_icon
 id text_input_error_icon
 id text_input_start_icon
