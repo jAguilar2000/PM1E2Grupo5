@@ -134,14 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void captureSignature() {
-        Bitmap signatureBitmap = firma.getSignatureBitmap();
-        convertSignatureToBase64();
-
-        showToast("Imagen capturada!");
-    }
-
-
 
     private String convertSignatureToBase64() {
 
