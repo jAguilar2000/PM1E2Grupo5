@@ -1357,7 +1357,6 @@ attr zOrderOnTop
 bool abc_action_bar_embed_tabs
 bool abc_config_actionMenuItemAllCaps
 bool mtrl_btn_textappearance_all_caps
-color Black
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -3243,6 +3242,7 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnAtras
 id btnCrear
 id btnlistado
 id buttonPanel

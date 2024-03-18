@@ -66,24 +66,18 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
         holder.latitudTextView.setText(contacto.getLatitud());
         holder.longitudTextView.setText(contacto.getLongitud());
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clicksCount++;
-                if (clicksCount == 2) {
-                    verUbicacion(contacto);
+        convertView.setOnClickListener(v -> {
+            clicksCount++;
+            if (clicksCount == 2) {
+                verUbicacion(contacto);
+                clicksCount = 0;
+            } else {
+                new Handler().postDelayed(() -> {
+                    if (clicksCount == 1) {
+                        mostrarOpciones(contacto);
+                    }
                     clicksCount = 0;
-                } else {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (clicksCount == 1) {
-                                mostrarOpciones(contacto);
-                            }
-                            clicksCount = 0;
-                        }
-                    }, DOUBLE_CLICK_DELAY);
-                }
+                }, DOUBLE_CLICK_DELAY);
             }
         });
 
@@ -93,23 +87,21 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
     private void mostrarOpciones(final Contactos contacto) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Seleccione una acción")
-                .setItems(new CharSequence[]{"Eliminar", "Actualizar", "Ver Ubicacion","Ver firma"}, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                eliminarContacto(contacto);
-                                break;
-                            case 1:
-                                actualizarContacto(contacto);
-                                break;
-                            case 2:
-                                verUbicacion(contacto);
-                                break;
-                            case 3:
-                                mostrarFirma(contacto);
-                                break;
-                        }
+                .setItems(new CharSequence[]{"Eliminar", "Actualizar", "Ver Ubicacion","Ver firma"},
+                        (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            eliminarContacto(contacto);
+                            break;
+                        case 1:
+                            actualizarContacto(contacto);
+                            break;
+                        case 2:
+                            verUbicacion(contacto);
+                            break;
+                        case 3:
+                            mostrarFirma(contacto);
+                            break;
                     }
                 })
                 .setNegativeButton("Cancelar", null)
@@ -135,26 +127,20 @@ public class ContactosAdapter extends ArrayAdapter<Contactos> {
                         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
                                 RestApiMethods.EndpointDeleteContacto,
                                 jsonBody,
-                                new Response.Listener<JSONObject>() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            String mensaje = response.getString("messaje");
-                                            Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
+                                response -> {
+                                    try {
+                                        String mensaje = response.getString("messaje");
+                                        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show();
 
-                                            contactosList.remove(contacto);
-                                            notifyDataSetChanged();
-                                        } catch (JSONException ex) {
-                                            ex.printStackTrace();
-                                        }
+                                        contactosList.remove(contacto);
+                                        notifyDataSetChanged();
+                                    } catch (JSONException ex) {
+                                        ex.printStackTrace();
                                     }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context, "Error al eliminar el contacto", Toast.LENGTH_LONG).show();
-                                error.printStackTrace();
-                            }
-                        });
+                                }, error -> {
+                                    Toast.makeText(context, "Error al eliminar el contacto", Toast.LENGTH_LONG).show();
+                                    error.printStackTrace();
+                                });
 
                         requestQueue.add(request);
                     }

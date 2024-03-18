@@ -4,7 +4,7 @@
             "outputFile": "com.example.pm1e2grupo5.test.app-mergeDebugAndroidTestResources-3:/values/values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\keyla\\.gradle\\caches\\transforms-3\\c8607414e9ae04aaf80b1bde0a39360d\\transformed\\core-1.5.0\\res\\values\\values.xml",
+                    "source": "/home/irrefl/.gradle/caches/transforms-3/c8607414e9ae04aaf80b1bde0a39360d/transformed/core-1.5.0/res/values/values.xml",
                     "from": {
                         "startLines": "4,11",
                         "startColumns": "0,0",

@@ -1,6 +1,5 @@
 R_DEF: Internal format may change without notice
 local
-color Black
 color black
 color white
 drawable ic_launcher_background
@@ -10,6 +9,7 @@ drawable ic_person
 drawable ic_phone
 drawable logo_del_examem
 drawable mm
+id btnAtras
 id btnCrear
 id btnlistado
 id editTextLatitud
