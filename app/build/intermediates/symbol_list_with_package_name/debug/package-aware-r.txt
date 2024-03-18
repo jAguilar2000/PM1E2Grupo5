@@ -3237,9 +3237,9 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btnLimpiarfirma
 id btnSalvarG
 id btncontatosS
-id btnfirma
 id buttonPanel
 id cache_measures
 id callMeasure

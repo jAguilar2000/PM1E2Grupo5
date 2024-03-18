@@ -7,8 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.io.ByteArrayOutputStream;
 
 public class Dibujar extends View {
     private Path drawPath; // El camino de dibujo
@@ -85,9 +88,18 @@ public class Dibujar extends View {
     }
 
     // Método para crear un nuevo dibujo (borrar el lienzo)
-    public void nuevoDibujo() {
+    public void limpiarFirma() {
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR); // Borra el lienzo
         invalidate(); // Invalida el View para que se redibuje
         borrar = true; // Se establece en verdadero ya que se está borrando
+    }
+    public String convertirFirmaABase64() {
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        draw(canvas);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 }

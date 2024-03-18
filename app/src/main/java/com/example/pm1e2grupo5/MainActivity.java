@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextInputEditText txtNombre, txtTelefono, txtLatitud, txtLongitud;
     private RequestQueue requestQueue;
-    private MaterialButton btnfirma, btnguardar, btncontatosS;
+    private MaterialButton btnLimpiarfirma, btnguardar, btncontatosS;
+    private Dibujar dibujar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,10 @@ public class MainActivity extends AppCompatActivity {
         txtTelefono = findViewById(R.id.txtTelefono);
         txtLatitud = findViewById(R.id.txtLatitud);
         txtLongitud = findViewById(R.id.txtLongitud);
-        btnfirma = findViewById(R.id.btnfirma);
+        btnLimpiarfirma = findViewById(R.id.btnLimpiarfirma);
         btnguardar = findViewById(R.id.btnSalvarG);
         btncontatosS = findViewById(R.id.btncontatosS);
+        dibujar = findViewById(R.id.lienzo);
 
         Intent intent = getIntent();
         if (intent.hasExtra("contactoId")) {
@@ -109,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btnLimpiarfirma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dibujar.limpiarFirma();
+            }
+        });
     }
 
     private void validarDatos() {
@@ -120,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Si hay un contactoId, actualiza el contacto, de lo contrario, crea uno nuevo
             int contactoId = getIntent().getIntExtra("contactoId", 0);
-            Contactos nuevoContacto = new Contactos(contactoId, txtNombre.getText().toString(), Integer.parseInt(txtTelefono.getText().toString()), txtLatitud.getText().toString(), txtLongitud.getText().toString());
+            String firmaBase64 = dibujar.convertirFirmaABase64();
+            Contactos nuevoContacto = new Contactos(contactoId, txtNombre.getText().toString(), Integer.parseInt(txtTelefono.getText().toString()), txtLatitud.getText().toString(), txtLongitud.getText().toString(),firmaBase64);
             SendData(nuevoContacto);
         }
     }
@@ -136,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             jsonperson.put("telefono", person.getTelefono());
             jsonperson.put("latitud", person.getLatitud());
             jsonperson.put("longitud", person.getLongitud());
+            jsonperson.put("firma", person.getFirma());
         } catch (JSONException ex) {
             ex.printStackTrace();
         }

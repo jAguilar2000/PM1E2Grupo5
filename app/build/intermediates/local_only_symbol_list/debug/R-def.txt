@@ -9,9 +9,9 @@ drawable ic_person
 drawable ic_phone
 drawable logo_del_examem
 drawable mm
+id btnLimpiarfirma
 id btnSalvarG
 id btncontatosS
-id btnfirma
 id editTextLatitud
 id editTextLongitud
 id editTextNombre

@@ -6,14 +6,15 @@ public class Contactos {
     private int telefono;
     private String latitud;
     private String longitud;
-    private String firmaBase64;
+    private String firma;
 
-    public Contactos(int contactoId, String nombre, int telefono, String latitud, String longitud) {
+    public Contactos(int contactoId, String nombre, int telefono, String latitud, String longitud, String firma) {
         this.contactoId = contactoId;
         this.nombre = nombre;
         this.telefono = telefono;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.firma = firma;
     }
     public Contactos(){
 
@@ -61,11 +62,11 @@ public class Contactos {
         this.longitud = longitud;
     }
 
-    public String getFirmaBase64() {
-        return firmaBase64;
+    public String getFirma() {
+        return firma;
     }
 
-    public void setFirmaBase64(String firmaBase64) {
-        this.firmaBase64 = firmaBase64;
+    public void setFirma(String firma) {
+        this.firma = firma;
     }
 }

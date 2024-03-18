@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.215" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnfirma"
+        android:id="@+id/btnLimpiarfirma"
 
         android:layout_width="326dp"
         android:layout_height="48dp"
@@ -41,14 +41,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:backgroundTint="#191818"
-        android:text="Guardar Firma" />
+        android:text="limpiar Firma" />
 
     <!-- Text Input Layout -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="398dp"
         android:layout_height="88dp"
         android:hint="Ingrese su Nombre"
-        android:layout_below="@+id/btnfirma"
+        android:layout_below="@+id/btnLimpiarfirma"
         android:layout_marginTop="10dp"
         app:boxBackgroundColor="#FAF5F5"
         app:boxStrokeColor="#100F0F"
