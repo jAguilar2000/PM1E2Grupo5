@@ -3,13 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Botón de Atrás -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAtras"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atrás"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        />
+
+    <!-- SearchView -->
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Buscar contacto"
+        android:layout_toEndOf="@id/btnAtras"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:iconifiedByDefault="false"
-        android:layout_margin="8dp"/>
+        android:queryHint="Buscar contacto" />
 
     <ListView
         android:id="@+id/listView"
