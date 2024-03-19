@@ -48,6 +48,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MostrarFirmasActivity"
+            android:exported="false" />
+        <activity
             android:name=".MostrarFirmaActivity"
             android:exported="false" />
         <activity

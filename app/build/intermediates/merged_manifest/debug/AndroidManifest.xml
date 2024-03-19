@@ -69,6 +69,9 @@
         android:theme="@style/Theme.PM1E2Grupo5"
         android:usesCleartextTraffic="true" >
         <activity
+            android:name="com.example.pm1e2grupo5.MostrarFirmasActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.pm1e2grupo5.MostrarFirmaActivity"
             android:exported="false" />
         <activity
